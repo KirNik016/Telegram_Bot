@@ -1,0 +1,6 @@
+TOKEN = "6250666436:AAFCePu2v27yDCaaEik2a8iFNfOMvn7fQyU"
+API_KEY = '1e356ecc1375f8194742c2f43f9d7578'
+
+keys = {'рубль' : 'RUB',
+        'евро' : 'EUR',
+        'доллар' : 'USD'}
