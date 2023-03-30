@@ -1,0 +1,35 @@
+import requests
+import json
+from web_tests_config import keys, API_KEY
+
+class ConvertionException(Exception):
+    pass
+
+class CryptoConvert:
+    @staticmethod
+    def convert(money_to_trade : str, money_trading : str, amount : str):
+
+        if money_to_trade == money_trading:
+            raise ConvertionException("Не удалось перевести одинаковые валюты")
+
+        try:
+            traded_ticker = keys[money_to_trade]
+        except KeyError:
+            raise ConvertionException(f"Не удалось обработать валюту {money_to_trade}")
+
+        try:
+            trading_ticker = keys[money_trading]
+        except KeyError:
+            raise ConvertionException(f"Не удалось обработать валюту {money_trading}")
+
+        try:
+            amount = float(amount)
+        except ValueError:
+            raise ConvertionException(f"Не удалось обработать количество {amount}")
+
+        req = requests.get(f'https://currate.ru/api/?get=\
+rates&pairs={traded_ticker}{trading_ticker}&key={API_KEY}')
+        total = json.loads(req.content)['data'][f'{keys[money_to_trade]}{keys[money_trading]}']
+        total = float(total)
+        total *= amount
+        return total
